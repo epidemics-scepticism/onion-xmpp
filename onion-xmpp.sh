@@ -40,6 +40,9 @@ EOF
 
 # Reload tor, generate and fetch our onion hostname
 service tor reload
+while [[ ! -e /var/lib/tor/onion_xmpp_server/hostname ]]; do
+	sleep 1 # hmmm there has to be a nicer method but this sort of works I guess...
+done
 SERVER_HOSTNAME=`cat /var/lib/tor/onion_xmpp_server/hostname`
 
 # Fetch mod_onions for prosody
