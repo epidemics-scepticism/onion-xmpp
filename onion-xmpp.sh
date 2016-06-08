@@ -51,7 +51,7 @@ wget -O "/usr/lib/prosody/modules/mod_onions.lua" "https://hg.prosody.im/prosody
 
 # Add self-signed certs, ChatSecure and others complain without TLS.
 openssl req -sha256 -x509 -nodes -days 365 -subj "/C=US/ST=Fear/L=Loathing/CN=$SERVER_HOSTNAME" -newkey rsa:2048 -keyout "/etc/prosody/certs/$SERVER_HOSTNAME.key" -out "/etc/prosody/certs/$SERVER_HOSTNAME.crt"
-CERT_FP=`openssl x509 -in $SERVER_HOSTNAME.crt -noout -fingerprint -sha256 | sed 's/.*Fingerprint=//;s/://g'`
+CERT_FP=`openssl x509 -in /etc/prosody/certs/$SERVER_HOSTNAME.crt -noout -fingerprint -sha256 | sed 's/.*Fingerprint=//;s/://g'`
 
 # Add our onion as VirtualHost to our prosody config, set it to only talk to other onions.
 cat > /etc/prosody/prosody.cfg.lua << EOF
@@ -61,6 +61,7 @@ modules_enabled = {
 		"dialback";
 		"posix";
 		"ping";
+		"saslauth";
 };
 c2s_require_encryption = true;
 s2s_secure_auth = false;
